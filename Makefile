@@ -29,6 +29,13 @@ INSTALL_PREFIX = usr/local
 
 # Generally should not need to edit below this line
 
+# use GNU date if installed as gdate
+ifeq ($(findstring gdate, `command -v gdate`), gdate)
+  DATE = gdate
+else
+  DATE = date
+endif
+
 # Verbose option, to output compile and link commands
 export V = false
 export CMD_PREFIX = @
@@ -59,11 +66,11 @@ DEPS = $(OBJECTS:.o=.d)
 
 # Macros for timing compilation
 TIME_FILE = $(dir $@).$(notdir $@)_time
-START_TIME = date '+%s' > $(TIME_FILE)
+START_TIME = $(DATE) '+%s' > $(TIME_FILE)
 END_TIME = read st < $(TIME_FILE) ; \
 	$(RM) $(TIME_FILE) ; \
-	st=$$((`date '+%s'` - $$st - 86400)) ; \
-	echo `date -u -d @$$st '+%H:%M:%S'` 
+	st=$$((`$(DATE) '+%s'` - $$st - 86400)) ; \
+	echo `$(DATE) -u -d @$$st '+%H:%M:%S'`
 
 # Version macros
 # Comment/remove this section to remove versioning
