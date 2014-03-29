@@ -30,7 +30,7 @@ INSTALL_PREFIX = usr/local
 # Generally should not need to edit below this line
 
 # use GNU date if installed as gdate
-ifeq ($(findstring gdate, `command -v gdate`), gdate)
+ifeq ($(findstring gdate, $(shell command -v gdate)), gdate)
   DATE = gdate
 else
   DATE = date
